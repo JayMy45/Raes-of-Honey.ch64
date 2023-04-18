@@ -7,6 +7,7 @@ import { Ticket } from "./Ticket"
 export const TicketList = ({ searchTermState }) => {
 
     const [tickets, setTickets] = useState([])
+    const [employees, setEmployees] = useState([])
     const [filteredTickets, setFiltered] = useState([])
     const [emergency, setEmergency] = useState(false)
     const [openOnly, setOpen] = useState(false)
@@ -24,9 +25,13 @@ export const TicketList = ({ searchTermState }) => {
 
     useEffect(
         () => {
-            fetch(`http://localhost:8088/serviceTickets`)
+            fetch(`http://localhost:8088/serviceTickets?_embed=employeeTickets`)
                 .then(res => res.json())
                 .then((data) => setTickets(data))
+            fetch(`http://localhost:8088/employees?_expand=user`)
+                .then(res => res.json())
+                .then((data) => setEmployees(data))
+
         },
         [] // When this array is empty, you are observing initial component state
     )
@@ -128,6 +133,7 @@ export const TicketList = ({ searchTermState }) => {
                     ticketObject={ticket}
                     key={`ticket--${ticket.id}`}
                     isStaff={honeyUserObject.staff}
+                    employees={employees}
                 />)
             }
 
