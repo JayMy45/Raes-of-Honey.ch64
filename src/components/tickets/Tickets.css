@@ -1,0 +1,39 @@
+.tickets {
+    display: flex;
+    flex-direction: column;
+}
+
+.ticket {
+    border: 1px solid burlywood;
+    background-color: rgb(243, 240, 237);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+/* all buttons */
+.button {
+    width: 10rem;
+    margin-top: 0.5rem;
+}
+
+/* show all button */
+.button__show-all,
+.button__close {
+    background-color: rgb(116, 168, 116);
+    color: white;
+}
+
+.button__open {
+    background-color: rgb(117, 154, 227);
+    color: white;
+}
+
+.button__emergency {
+    background-color: rgb(195, 40, 40);
+    color: white;
+}
+
+.button__create {
+    background-color: rgb(227, 227, 102);
+    color: blue;
+}

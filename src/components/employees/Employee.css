@@ -1,0 +1,31 @@
+.employee__list {
+    border: 1px dotted fuchsia;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    width: 30%;
+    text-align: center;
+    margin: .5rem;
+    background-color: rgb(202, 224, 231);
+}
+
+article {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.employee__details {
+    border: 1px dotted fuchsia;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    width: 30%;
+    text-align: left;
+    margin: .5rem;
+    background-color: rgb(202, 224, 231);
+}
+
+.employee__header {
+    font-size: x-large;
+    text-decoration: underline;
+}
