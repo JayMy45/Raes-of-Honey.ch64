@@ -15,8 +15,24 @@ export const Ticket = ({ ticketObject, currentUser, employees, getAllTickets }) 
     const userEmployee = employees.find(employee => employee.userId === currentUser.id)
 
     const canClose = () => {
-        if (userEmployee?.id === assignedEmployee?.id && ticketObject.dateCompleted === "") {
+        if (userEmployee?.id === assignedEmployee?.id && ticketObject.dateCompleted === "" && currentUser.staff) {
             return < button onClick={closeTicket} className="ticket__finish">Finish</button>
+        } else {
+            return ""
+        }
+    }
+
+
+    const deleteButton = () => {
+        if (!currentUser.staff) {
+            return < button onClick={() => {
+                fetch(`http://localhost:8088/serviceTickets/${ticketObject.id}`, {
+                    method: "DELETE"
+                })
+                    .then(data => {
+                        getAllTickets()
+                    })
+            }} className="ticket__delete">Delete</button>
         } else {
             return ""
         }
@@ -82,13 +98,16 @@ export const Ticket = ({ ticketObject, currentUser, employees, getAllTickets }) 
                     {
                         ticketObject.employeeTickets.length
 
-                            ? <div>`Currently being worked on ${assignedEmployee !== null ? assignedEmployee?.user?.fullName : ""}`</div>
+                            ? <div>Currently being worked on {assignedEmployee !== null ? assignedEmployee?.user?.fullName : ""}</div>
                             : <div>{buttonOrNoButton()}</div>
                     }
                 </div>
                 <div>
                     {
                         canClose()
+                    }
+                    {
+                        deleteButton()
                     }
                 </div>
             </footer>
