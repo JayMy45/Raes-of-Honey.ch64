@@ -37,3 +37,10 @@
     background-color: rgb(227, 227, 102);
     color: blue;
 }
+
+.ticket__footer,
+.ticket__claim {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}

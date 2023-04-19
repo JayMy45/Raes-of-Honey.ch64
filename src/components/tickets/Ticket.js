@@ -14,10 +14,37 @@ export const Ticket = ({ ticketObject, currentUser, employees, getAllTickets }) 
     //find the current employee profile object for the current user
     const userEmployee = employees.find(employee => employee.userId === currentUser.id)
 
+    const canClose = () => {
+        if (userEmployee?.id === assignedEmployee?.id && ticketObject.dateCompleted === "") {
+            return < button onClick={closeTicket} className="ticket__finish">Finish</button>
+        } else {
+            return ""
+        }
+    }
+
+
+    const closeTicket = () => {
+        const copy = {
+            userId: ticketObject.userId,
+            description: ticketObject.description,
+            emergency: ticketObject.emergency,
+            dateCompleted: new Date()
+        }
+        return fetch(`http://localhost:8088/serviceTickets/${ticketObject.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(copy)
+        })
+            .then(response => response.json())
+            .then(getAllTickets)
+    }
+
     // create function to handle conditional logic instead of nested ternary statements
     const buttonOrNoButton = () => {
         if (currentUser.staff) {
-            return <button onClick={() => {
+            return <div><button onClick={() => {
                 fetch('http://localhost:8088/employeeTickets', {
                     method: "POST",
                     headers: {
@@ -33,7 +60,7 @@ export const Ticket = ({ ticketObject, currentUser, employees, getAllTickets }) 
                         // GET the state from the API again
                         getAllTickets()
                     })
-            }}>Claim</button>
+            }}>Claim</button></div>
         } else {
             return ""
         }
@@ -50,12 +77,20 @@ export const Ticket = ({ ticketObject, currentUser, employees, getAllTickets }) 
             </header>
             <section>{ticketObject.description}</section>
             <section>Emergency: {ticketObject.emergency ? "🧨" : "No"}</section>
-            <footer>
-                {
-                    ticketObject.employeeTickets.length
-                        ? `Currently being worked on ${assignedEmployee !== null ? assignedEmployee?.user?.fullName : ""}`
-                        : buttonOrNoButton()
-                }
+            <footer className="ticket__footer">
+                <div>
+                    {
+                        ticketObject.employeeTickets.length
+
+                            ? <div>`Currently being worked on ${assignedEmployee !== null ? assignedEmployee?.user?.fullName : ""}`</div>
+                            : <div>{buttonOrNoButton()}</div>
+                    }
+                </div>
+                <div>
+                    {
+                        canClose()
+                    }
+                </div>
             </footer>
         </div>
     );
